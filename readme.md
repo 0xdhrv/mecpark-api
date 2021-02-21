@@ -161,6 +161,7 @@ garageId: 3
 
 [http://localhost:4000/spaces/create](http://localhost:4000/spaces/create)
 
+```json
 {
   "code": "101",
   "totalCapacity": "2",
@@ -184,7 +185,7 @@ garageId: 3
   "totalCapacity": "2",
   "garageId": 3
 }
-
+```
 ## 6. Registering 3 Users
 
 [http://localhost:4000/users/register](http://localhost:4000/users/register)
