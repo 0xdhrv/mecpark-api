@@ -9,6 +9,7 @@ namespace WebApi.Services
     {
         Garage Create(Garage garage, int parkingManagerId);
         IEnumerable<Garage> GetGarages();
+        Garage GetGarage(int id);
         void Update(int userId, Garage garage);
         void PlusGarageCapacity(Garage garage);
         void MinusGarageCapacity(Garage garage);
@@ -57,6 +58,12 @@ namespace WebApi.Services
         public IEnumerable<Garage> GetGarages()
         {
             return _context.Garages;
+        }
+
+        public Garage GetGarage(int id)
+        {
+            return _context.Garages.Find(id);
+
         }
 
         public void Update(int userId, Garage garageParam)

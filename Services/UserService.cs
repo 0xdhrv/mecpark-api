@@ -289,10 +289,12 @@ namespace WebApi.Services
             userParam.Role = role;
 
 
+
+
             if (userParam.Role == "AllocationManager")
             {
                 var user = _context.Users.Find(userParam.Id);
-                var allocationManager = _context.AllocationManagers.Single(a => a.Email == userParam.Email);
+                var allocationManager = _context.AllocationManagers.Single(a => a.Email == email);
 
                 if (user == null || allocationManager == null)
                     throw new AppException("AllocationManager not found");
@@ -343,7 +345,7 @@ namespace WebApi.Services
             if (userParam.Role == "ParkingManager")
             {
                 var user = _context.Users.Find(userParam.Id);
-                var parkingManager = _context.ParkingManagers.Single(p => p.Email == userParam.Email);
+                var parkingManager = _context.ParkingManagers.SingleOrDefault(p => p.Email == email);
                 if (user == null || parkingManager == null)
                     throw new AppException("ParkingManager not found");
 

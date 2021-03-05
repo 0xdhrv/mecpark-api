@@ -58,6 +58,15 @@ namespace WebApi.Controllers
         }
 
         [Authorize(Roles = "ParkingManager")]
+        [HttpGet("{id}")]
+        public IActionResult GetGarage(int id)
+        {
+            var garage = _garageService.GetGarage(id);
+            var model = _mapper.Map<Garage>(garage);
+            return Ok(model);
+        }
+
+        [Authorize(Roles = "ParkingManager")]
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UpdateGarageModel model)
         {

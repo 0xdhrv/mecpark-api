@@ -26,10 +26,8 @@ namespace WebApi
             _configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // use sql server db in production and sqlite db in development
             if (_env.IsProduction())
                 services.AddDbContext<DataContext, SqliteDataContext>();
             else
@@ -47,13 +45,11 @@ namespace WebApi
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            // configure strongly typed settings objects
             var appSettingsSection = _configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
             services.AddScoped<IEmailService, EmailService>();
 
-            // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
@@ -72,7 +68,6 @@ namespace WebApi
                         var user = userService.GetUserById(userId);
                         if (user == null)
                         {
-                            // return unauthorized if user no longer exists
                             context.Fail("Unauthorized");
                         }
                         return Task.CompletedTask;
@@ -89,17 +84,14 @@ namespace WebApi
                 };
             });
 
-            // configure DI for application services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGarageService, GarageService>();
             services.AddScoped<ISpaceService, SpaceService>();
             services.AddScoped<IParkingService, ParkingService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext dataContext)
         {
-            // migrate any database changes on startup (includes initial db creation)
             dataContext.Database.Migrate();
 
             app.UseSwagger();
@@ -111,14 +103,13 @@ namespace WebApi
 
             app.UseRouting();
 
-            // global cors policy
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
-
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
