@@ -56,7 +56,7 @@ namespace WebApi.Controllers
         }
 
         [Authorize(Roles = "AllocationManager")]
-        [HttpGet]
+        [HttpGet("{id}")]
         public IActionResult GetSpace(int id)
         {
             var space = _spaceService.GetSpace(id);
