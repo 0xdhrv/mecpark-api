@@ -170,15 +170,16 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
-        [Authorize]
+        [Authorize(Roles ="Admin, ParkingManager")]
         [HttpGet("parkingmanagers/{id}")]
         public IActionResult GetParkingManagerById(int id)
         {
             var context = HttpContext.User.Identity;
             int userId = int.Parse(context.Name);
-            if (id != _userService.GetParkingManagerId(userId) && _userService.getRole(userId) != "Admin")
+            if (id != userId)
                 return Unauthorized(new { message = "Unauthorized" });
-            var parkingManager = _userService.GetParkingManagerById(id);
+
+            var parkingManager = _userService.GetParkingManagerById(_userService.GetParkingManagerId(id));
             var model = _mapper.Map<ParkingManagerModel>(parkingManager);
             return Ok(model);
         }
