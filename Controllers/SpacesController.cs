@@ -56,6 +56,15 @@ namespace WebApi.Controllers
         }
 
         [Authorize(Roles = "AllocationManager")]
+        [HttpGet]
+        public IActionResult GetSpace(int id)
+        {
+            var space = _spaceService.GetSpace(id);
+            var model = _mapper.Map<Space>(space);
+            return Ok(model);
+        }
+
+        [Authorize(Roles = "AllocationManager")]
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UpdateSpaceModel model)
         {
