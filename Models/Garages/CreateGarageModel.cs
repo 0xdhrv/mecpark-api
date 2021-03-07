@@ -9,6 +9,8 @@ namespace WebApi.Models.Garages
         [Required]
         public string Address { get; set; }
         [Required]
+        public string City { get; set; }
+        [Required]
         public string State { get; set; }
         [Required]
         public string Phone { get; set; }
