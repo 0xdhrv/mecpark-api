@@ -48,7 +48,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, AllocationManager")]
         [HttpGet]
         public IActionResult GetGarages()
         {

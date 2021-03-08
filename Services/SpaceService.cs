@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WebApi.Entities;
 using WebApi.Helpers;
@@ -44,8 +45,9 @@ namespace WebApi.Services
             var garageCapacity = garage.TotalCapacity;
             int garageCapacityInt = int.Parse(garageCapacity);
 
-            var spaceCount = _context.Spaces.Count(s => s.GarageId == garage.Id);
-            spaceCount += 1;
+            var spaceCount = allocationManager.Space;
+            int spaceCountInt = int.Parse(spaceCount);
+            spaceCountInt += 1;
 
             var spaceCapacity = space.TotalCapacity;
             int spaceCapacityInt = int.Parse(spaceCapacity);
@@ -66,7 +68,7 @@ namespace WebApi.Services
             garage.TotalCapacity = garageTotalCapacityParam.ToString();
             _context.Garages.Update(garage);
             _context.SaveChanges();
-            allocationManager.Space = spaceParam.ToString();
+            allocationManager.Space = spaceCountInt.ToString();
             allocationManager.Spaces.Add(space);
             _context.AllocationManagers.Update(allocationManager);
             _context.SaveChanges();
@@ -86,8 +88,11 @@ namespace WebApi.Services
         public void Update(int userId, Space spaceParam)
         {
             var space = _context.Spaces.Find(spaceParam.Id);
-            int allocationManagerId = _userService.GetParkingManagerId(userId);
+            int allocationManagerId = _userService.GetAllocationManagerId(userId);
             var allocationManager = _context.AllocationManagers.Find(allocationManagerId);
+            var garage = _context.Garages.Single(x => x.Id == space.GarageId);
+            var garageCapacity = garage.TotalCapacity;
+            int garageCapacityInt = int.Parse(garageCapacity);
             if (space.AllocationManagerId != allocationManager.Id)
                 throw new AppException("Can't Update That Space");
             if (!string.IsNullOrWhiteSpace(spaceParam.Code))
@@ -96,7 +101,14 @@ namespace WebApi.Services
             }
             if (!string.IsNullOrWhiteSpace(spaceParam.TotalCapacity))
             {
+                var spaceCapacityInt = int.Parse(space.TotalCapacity);
+                garageCapacityInt -= spaceCapacityInt;
+                var spaceParamCapacityInt = int.Parse(spaceParam.TotalCapacity);
+                garageCapacityInt += spaceParamCapacityInt;
                 space.TotalCapacity = spaceParam.TotalCapacity;
+                garage.TotalCapacity = garageCapacityInt.ToString();
+                _context.Garages.Update(garage);
+                _context.SaveChanges();
             }
             _context.Spaces.Update(space);
             _context.SaveChanges();
@@ -125,12 +137,36 @@ namespace WebApi.Services
         public void Delete(int userId, int id)
         {
             var space = _context.Spaces.Find(id);
-            int allocationManagerId = _userService.GetParkingManagerId(userId);
+            int allocationManagerId = _userService.GetAllocationManagerId(userId);
             var allocationManager = _context.AllocationManagers.Find(allocationManagerId);
             if (space.AllocationManagerId != allocationManager.Id)
                 throw new AppException("Can't Delete That Space");
+            if (space == null)
+            {
+                throw new AppException("");
+            }
+            var garage = _context.Garages.Single(x => x.Id == space.GarageId);
+            var garageCapacity = garage.TotalCapacity;
+            var spaceCapacity = space.TotalCapacity;
+            int garageCapacityInt = int.Parse(garageCapacity);
+            garageCapacityInt -= int.Parse(spaceCapacity);
+            garage.TotalCapacity = garageCapacityInt.ToString();
+            var spaceCount = garage.Space;
+            int spaceCountInt = int.Parse(spaceCount);
+            spaceCountInt -= 1;
+            garage.Space = spaceCountInt.ToString();
+            _context.Garages.Update(garage);
+            _context.SaveChanges();
             _context.Spaces.Remove(space);
             _context.SaveChanges();
+            Console.WriteLine("\n allocationManager.Space" + allocationManager.Space + "\n");
+            int spaceParamInt = int.Parse(allocationManager.Space);
+            spaceParamInt -= 1;
+            allocationManager.Space = spaceParamInt.ToString();
+            Console.WriteLine("\n allocationManager.Space" + allocationManager.Space + "\n");
+            _context.AllocationManagers.Update(allocationManager);
+            _context.SaveChanges();
+            Console.WriteLine("\n allocationManager.Space" + allocationManager.Space + "\n");
         }
     }
 }

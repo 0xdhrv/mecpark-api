@@ -150,7 +150,14 @@ namespace WebApi.Services
             if (parkingManager.GarageId == 0)
                 throw new AppException("Can't Delete That Parking");
             var garage = _context.Garages.Find(id);
+            if(garage == null)
+            {
+                throw new AppException("");
+            }
             _context.Garages.Remove(garage);
+            _context.SaveChanges();
+            parkingManager.GarageId = 0;
+            _context.ParkingManagers.Update(parkingManager);
             _context.SaveChanges();
         }
     }

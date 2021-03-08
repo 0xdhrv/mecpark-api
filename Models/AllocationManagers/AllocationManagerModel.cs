@@ -15,7 +15,8 @@ namespace WebApi.Models.AllocationManagers
         public string City { get; set; }
         public string State { get; set; }
         public string Phone { get; set; }
-        public Space Space { get; set; }
+        public int GarageId { get; set; }
+        public string Space { get; set; }
 
     }
 }

@@ -148,15 +148,15 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, AllocationManager")]
         [HttpGet("allocationmanagers/{id}")]
         public IActionResult GetAllocationManagerById(int id)
         {
             var context = HttpContext.User.Identity;
             int userId = int.Parse(context.Name);
-            if (id != _userService.GetAllocationManagerId(userId) && _userService.getRole(userId) != "Admin")
+            if (id != userId)
                 return Unauthorized(new { message = "Unauthorized" });
-            var allocationManager = _userService.GetAllocationManagerById(id);
+            var allocationManager = _userService.GetAllocationManagerById(_userService.GetAllocationManagerId(id));
             var model = _mapper.Map<AllocationManagerModel>(allocationManager);
             return Ok(model);
         }

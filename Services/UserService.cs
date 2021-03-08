@@ -155,6 +155,7 @@ namespace WebApi.Services
                 allocationManager.PasswordHash = user.PasswordHash;
                 allocationManager.PasswordSalt = user.PasswordSalt;
                 allocationManager.Created = DateTime.Now;
+                allocationManager.Space = "0";
                 _context.AllocationManagers.Add(allocationManager);
                 _context.SaveChanges();
             }
