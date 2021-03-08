@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WebApi.Entities;
 using WebApi.Helpers;
@@ -78,31 +79,43 @@ namespace WebApi.Services
             {
                 garage.Name = garageParam.Name;
             }
-            if (string.IsNullOrWhiteSpace(garageParam.Address))
+            if (!string.IsNullOrWhiteSpace(garageParam.Address))
             {
                 garage.Address = garageParam.Address;
             }
-            if (string.IsNullOrWhiteSpace(garageParam.City))
+            if (!string.IsNullOrWhiteSpace(garageParam.City))
             {
                 garage.City = garageParam.City;
             }
-            if (string.IsNullOrWhiteSpace(garageParam.State))
+            if (!string.IsNullOrWhiteSpace(garageParam.State))
             {
                 garage.State = garageParam.State;
             }
-            if (string.IsNullOrWhiteSpace(garageParam.Phone))
+            if (!string.IsNullOrWhiteSpace(garageParam.Phone))
             {
                 garage.Phone = garageParam.Phone;
             }
             if (garageParam.hasCleaningService == true || garageParam.hasCleaningService == false)
             {
                 garage.hasCleaningService = garageParam.hasCleaningService;
+                if (!garageParam.hasCleaningService)
+                {
+                    garage.CleaningRate = "N/A";
+                }
             }
-            if (string.IsNullOrWhiteSpace(garageParam.TotalCapacity))
+            if (!string.IsNullOrWhiteSpace(garageParam.ParkingRate))
+            {
+                garage.ParkingRate = garageParam.ParkingRate;
+            }
+            if (!string.IsNullOrWhiteSpace(garageParam.CleaningRate) && garageParam.hasCleaningService)
+            {
+                garage.CleaningRate = garageParam.CleaningRate;
+            }
+            if (!string.IsNullOrWhiteSpace(garageParam.TotalCapacity))
             {
                 garage.TotalCapacity = garageParam.TotalCapacity;
             }
-            if (string.IsNullOrWhiteSpace(garageParam.Space))
+            if (!string.IsNullOrWhiteSpace(garageParam.Space))
             {
                 garage.Space = garageParam.Space;
             }
