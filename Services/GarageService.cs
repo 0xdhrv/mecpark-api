@@ -154,6 +154,12 @@ namespace WebApi.Services
             {
                 throw new AppException("");
             }
+            var spaces = _context.Spaces.Where(x => x.GarageId == id);
+            var allocationManager = _context.AllocationManagers.SingleOrDefault(x => x.GarageId == parkingManager.GarageId);
+            allocationManager.Space = "0";
+            _context.AllocationManagers.Update(allocationManager);
+            _context.SaveChanges();
+            _context.Spaces.RemoveRange(spaces);
             _context.Garages.Remove(garage);
             _context.SaveChanges();
             parkingManager.GarageId = 0;

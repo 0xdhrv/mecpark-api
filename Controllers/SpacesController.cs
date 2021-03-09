@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using WebApi.Entities;
 using WebApi.Helpers;
@@ -51,6 +52,16 @@ namespace WebApi.Controllers
         public IActionResult GetSpaces()
         {
             var spaces = _spaceService.GetSpaces();
+            Console.WriteLine("\n" + spaces + "\n");
+            var model = _mapper.Map<IList<Space>>(spaces);
+            return Ok(model);
+        }
+
+        // [Authorize(Roles = "Admin, AllocationManager, User")]
+        [HttpGet("bygarage/{id}")]
+        public IActionResult GetSpacesByGarage(int id)
+        {
+            var spaces = _spaceService.GetSpacesByGarage(id);
             var model = _mapper.Map<IList<Space>>(spaces);
             return Ok(model);
         }

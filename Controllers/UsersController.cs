@@ -64,11 +64,7 @@ namespace WebApi.Controllers
             return Ok(new
             {
                 Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
                 Role = user.Role,
-                Created = user.Created,
-                isVerfied = user.IsVerified,
                 Token = tokenString
             });
         }

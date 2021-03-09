@@ -9,7 +9,7 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(SqliteDataContext))]
-    [Migration("20210308131530_Initial")]
+    [Migration("20210309091528_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApi.Helpers;
 using WebApi.Services;
+using Newtonsoft.Json;
 
 namespace WebApi
 {
@@ -39,7 +40,10 @@ namespace WebApi
                 services.AddDbContext<DataContext, SqliteDataContext>();
 
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            // services.AddMvc().AddJsonOptions()
 
             services.AddSwaggerGen();
 
