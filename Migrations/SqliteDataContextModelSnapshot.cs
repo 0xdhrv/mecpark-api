@@ -157,6 +157,9 @@ namespace WebApi.Migrations
                     b.Property<bool>("isActive")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("isBooked")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("withCleaningService")
                         .HasColumnType("INTEGER");
 

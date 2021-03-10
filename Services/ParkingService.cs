@@ -11,6 +11,7 @@ namespace WebApi.Services
         Parking Book(Parking parking, int userId);
         void CheckIn(int userId);
         void CheckOut(int userId);
+        Parking GetByUserId(int userId);
         IEnumerable<Parking> GetActiveParkings();
         IEnumerable<Parking> GetInactiveParkings();
         ParkingHistory GetReceipt(int userId);
@@ -49,7 +50,9 @@ namespace WebApi.Services
                 throw new AppException("Can't Book Parking!");
             }
 
-            var oldParking = _context.Parkings.Count(p => p.UserId == userId && p.isActive == true);
+            parking.isBooked = true;
+
+            var oldParking = _context.Parkings.Count(p => p.UserId == userId && p.isBooked == true);
 
             if (oldParking > 0)
             {
@@ -137,6 +140,12 @@ namespace WebApi.Services
 
             _spaceService.MinusSpaceCapacity(space);
             _garageService.MinusGarageCapacity(garage);
+        }
+
+        public Parking GetByUserId(int userId)
+        {
+            var parking = _context.Parkings.SingleOrDefault(p => p.UserId == userId);
+            return parking;
         }
 
         public ParkingHistory GetReceipt(int userId)

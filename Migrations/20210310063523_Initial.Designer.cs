@@ -9,7 +9,7 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(SqliteDataContext))]
-    [Migration("20210309091528_Initial")]
+    [Migration("20210310063523_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -157,6 +157,9 @@ namespace WebApi.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("isActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isBooked")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("withCleaningService")

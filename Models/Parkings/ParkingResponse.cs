@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace WebApi.Entities
+namespace WebApi.Models.Parkings
 {
-    public class Parking
+    public class ParkingResponse
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public string VehicleNumber { get; set; }
-        public string DriverName { get; set; }
         public int SpaceId { get; set; }
         public int GarageId { get; set; }
-        public User User { get; set; }
+        public string VehicleNumber { get; set; }
+        public string DriverName { get; set; }
         public DateTime UserCheckIn { get; set; }
         public DateTime UserCheckOut { get; set; }
         public bool withCleaningService { get; set; }

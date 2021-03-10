@@ -80,6 +80,22 @@ namespace WebApi.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("byuser/{id}")]
+        public IActionResult GetParkingByUser(int id)
+        {
+            var parking = _parkingService.GetByUserId(id);
+            if(parking == null)
+            {
+                return Ok(false);
+            }
+            else
+            {
+                var model = _mapper.Map<ParkingResponse>(parking);
+                return Ok(model);
+            }
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpGet("active")]
         public IActionResult GetActiveParkings()

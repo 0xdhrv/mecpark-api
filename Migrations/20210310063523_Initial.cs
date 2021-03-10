@@ -162,7 +162,8 @@ namespace WebApi.Migrations
                     UserCheckOut = table.Column<DateTime>(nullable: false),
                     withCleaningService = table.Column<bool>(nullable: false),
                     Cost = table.Column<string>(nullable: true),
-                    isActive = table.Column<bool>(nullable: false)
+                    isActive = table.Column<bool>(nullable: false),
+                    isBooked = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
