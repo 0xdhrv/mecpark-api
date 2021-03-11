@@ -136,6 +136,8 @@ namespace WebApi.Services
             parkingHistory.UserCheckOut = parking.UserCheckOut;
             parkingHistory.withCleaningService = parking.withCleaningService;
             parkingHistory.Cost = parking.Cost;
+            parkingHistory.ParkingCost = parking.ParkingCost;
+            parkingHistory.CleaningCost = parking.CleaningCost;
             parkingHistory.interval = ToReadableString(interval);
             _context.ParkingHistories.Add(parkingHistory);
             _context.SaveChanges();
