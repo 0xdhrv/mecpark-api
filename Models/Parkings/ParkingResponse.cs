@@ -15,6 +15,8 @@ namespace WebApi.Models.Parkings
         public DateTime UserCheckOut { get; set; }
         public bool withCleaningService { get; set; }
         public string Cost { get; set; }
+        public string CleaningCost { get; set; }
+        public string ParkingCost { get; set; }
         public bool isActive { get; set; }
         public bool isBooked { get; set; }
     }

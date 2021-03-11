@@ -119,6 +119,8 @@ namespace WebApi.Services
 
             double Cost = parkingCost + cleaningCost;
 
+            Console.WriteLine("\n" + parkingCost + cleaningCost + "\n");
+
             parking.CleaningCost = cleaningCost.ToString();
             parking.ParkingCost = parkingCost.ToString();
             parking.Cost = Cost.ToString();
