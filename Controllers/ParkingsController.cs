@@ -85,15 +85,8 @@ namespace WebApi.Controllers
         public IActionResult GetParkingByUser(int id)
         {
             var parking = _parkingService.GetByUserId(id);
-            if(parking == null)
-            {
-                return Ok(false);
-            }
-            else
-            {
-                var model = _mapper.Map<ParkingResponse>(parking);
-                return Ok(model);
-            }
+            var model = _mapper.Map<ParkingResponse>(parking);
+            return Ok(model);
         }
 
         [Authorize(Roles = "Admin")]
