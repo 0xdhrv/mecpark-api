@@ -130,6 +130,9 @@ namespace WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CleaningCost")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Cost")
                         .HasColumnType("TEXT");
 
@@ -138,6 +141,9 @@ namespace WebApi.Migrations
 
                     b.Property<int>("GarageId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ParkingCost")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("SpaceId")
                         .HasColumnType("INTEGER");
@@ -176,6 +182,9 @@ namespace WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CleaningCost")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Cost")
                         .HasColumnType("TEXT");
 
@@ -184,6 +193,9 @@ namespace WebApi.Migrations
 
                     b.Property<int>("GarageId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ParkingCost")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("SpaceId")
                         .HasColumnType("INTEGER");

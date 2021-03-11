@@ -9,7 +9,7 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(SqliteDataContext))]
-    [Migration("20210310063523_Initial")]
+    [Migration("20210311061126_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,9 @@ namespace WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CleaningCost")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Cost")
                         .HasColumnType("TEXT");
 
@@ -140,6 +143,9 @@ namespace WebApi.Migrations
 
                     b.Property<int>("GarageId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ParkingCost")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("SpaceId")
                         .HasColumnType("INTEGER");
@@ -178,6 +184,9 @@ namespace WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CleaningCost")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Cost")
                         .HasColumnType("TEXT");
 
@@ -186,6 +195,9 @@ namespace WebApi.Migrations
 
                     b.Property<int>("GarageId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ParkingCost")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("SpaceId")
                         .HasColumnType("INTEGER");

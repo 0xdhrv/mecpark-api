@@ -115,6 +115,8 @@ namespace WebApi
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
+            app.UseHttpsRedirection();
+
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }

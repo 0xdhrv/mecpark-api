@@ -109,15 +109,18 @@ namespace WebApi.Services
             int parkingRate = Int32.Parse(garage.ParkingRate);
             double parkingCost = (parkingRate * interval.TotalMinutes) / 60;
 
-            int CleaningCost = 0;
+            int cleaningCost = 0;
 
             if (parking.withCleaningService)
             {
-                CleaningCost = Int32.Parse(garage.CleaningRate);
+                cleaningCost = Int32.Parse(garage.CleaningRate);
             }
 
-            double Cost = parkingCost + CleaningCost;
 
+            double Cost = parkingCost + cleaningCost;
+
+            parking.CleaningCost = cleaningCost.ToString();
+            parking.ParkingCost = parkingCost.ToString();
             parking.Cost = Cost.ToString();
             _context.Parkings.Update(parking);
             _context.SaveChanges();

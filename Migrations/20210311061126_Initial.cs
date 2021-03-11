@@ -133,6 +133,8 @@ namespace WebApi.Migrations
                     UserCheckIn = table.Column<DateTime>(nullable: false),
                     UserCheckOut = table.Column<DateTime>(nullable: false),
                     withCleaningService = table.Column<bool>(nullable: false),
+                    CleaningCost = table.Column<string>(nullable: true),
+                    ParkingCost = table.Column<string>(nullable: true),
                     Cost = table.Column<string>(nullable: true),
                     interval = table.Column<string>(nullable: true)
                 },
@@ -161,6 +163,8 @@ namespace WebApi.Migrations
                     UserCheckIn = table.Column<DateTime>(nullable: false),
                     UserCheckOut = table.Column<DateTime>(nullable: false),
                     withCleaningService = table.Column<bool>(nullable: false),
+                    CleaningCost = table.Column<string>(nullable: true),
+                    ParkingCost = table.Column<string>(nullable: true),
                     Cost = table.Column<string>(nullable: true),
                     isActive = table.Column<bool>(nullable: false),
                     isBooked = table.Column<bool>(nullable: false)

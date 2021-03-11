@@ -14,6 +14,8 @@ namespace WebApi.Entities
         public DateTime UserCheckIn { get; set; }
         public DateTime UserCheckOut { get; set; }
         public bool withCleaningService { get; set; }
+        public string CleaningCost { get; set; }
+        public string ParkingCost { get; set; }
         public string Cost { get; set; }
         public bool isActive { get; set; }
         public bool isBooked { get; set; }
