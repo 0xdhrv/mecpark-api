@@ -448,7 +448,7 @@ namespace WebApi.Services
             {
                 if (user.Role == "AllocationManager")
                 {
-                    var allocationManager = _context.AllocationManagers.Single(a => a.Email == user.Email);
+                    var allocationManager = _context.AllocationManagers.SingleOrDefault(a => a.Email == user.Email);
                     _context.AllocationManagers.Remove(allocationManager);
                     _context.Users.Remove(user);
                     _context.SaveChanges();
@@ -456,8 +456,21 @@ namespace WebApi.Services
 
                 if (user.Role == "ParkingManager")
                 {
-                    var parkingManager = _context.ParkingManagers.Single(p => p.Email == user.Email);
-                    _context.ParkingManagers.Remove(parkingManager);
+                    var parkingManager = _context.ParkingManagers.SingleOrDefault(p => p.Email == user.Email);
+                    var garage = _context.Garages.Find(parkingManager.GarageId);
+                    var spaces = _context.Spaces.Where(x => x.GarageId == id);
+                    var allocationManager = _context.AllocationManagers.SingleOrDefault(x => x.GarageId == parkingManager.GarageId);
+                    if (allocationManager != null)
+                    {
+                        allocationManager.Space = "0";
+                        _context.AllocationManagers.Update(allocationManager);
+                        _context.SaveChanges();
+                        _context.Spaces.RemoveRange(spaces);
+                        _context.SaveChanges();
+
+                    }
+                    _context.Garages.Remove(garage);
+                    _context.SaveChanges();
                     _context.Users.Remove(user);
                     _context.SaveChanges();
                 }
