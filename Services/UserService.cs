@@ -473,6 +473,8 @@ namespace WebApi.Services
                     _context.SaveChanges();
                     _context.Users.Remove(user);
                     _context.SaveChanges();
+                    _context.ParkingManagers.Remove(parkingManager);
+                    _context.SaveChanges();
                 }
 
                 if (user.Role == "User")

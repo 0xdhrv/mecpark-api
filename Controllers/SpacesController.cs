@@ -66,7 +66,7 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
-        [Authorize(Roles = "AllocationManager")]
+        [Authorize(Roles = "AllocationManager, ParkingManager")]
         [HttpGet("{id}")]
         public IActionResult GetSpace(int id)
         {
