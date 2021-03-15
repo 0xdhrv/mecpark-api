@@ -80,6 +80,48 @@ namespace WebApi.Controllers
             }
         }
 
+        [Authorize(Roles = "AllocationManager")]
+        [HttpPost("system/checkin")]
+        public IActionResult SystemCheckIn([FromBody] BookParkingAllocationModel model)
+        {
+            var context = HttpContext.User.Identity;
+            int id = int.Parse(context.Name);
+
+            var userParking = _mapper.Map<Parking>(model);
+            
+
+            try
+            {
+                _parkingService.CheckIn(userParking.UserId);
+                return Ok(new { message = "✓ Parking CheckIn" });
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize(Roles = "AllocationManager")]
+        [HttpPost("system/checkout")]
+        public IActionResult SystemCheckOut([FromBody] BookParkingAllocationModel model)
+        {
+            var context = HttpContext.User.Identity;
+            int id = int.Parse(context.Name);
+
+            var userParking = _mapper.Map<Parking>(model);
+
+
+            try
+            {
+                _parkingService.CheckOut(userParking.UserId);
+                return Ok(new { message = "✓ Parking CheckOut" });
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [AllowAnonymous]
         [HttpGet("byuser/{id}")]
         public IActionResult GetParkingByUser(int id)

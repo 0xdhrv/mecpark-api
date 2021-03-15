@@ -25,10 +25,12 @@ namespace WebApi.Services
         private readonly DataContext _context;
         private readonly IGarageService _garageService;
         private readonly ISpaceService _spaceService;
+        private readonly IUserService _userService;
 
-        public ParkingService(DataContext context, IGarageService garageService, ISpaceService spaceService)
+        public ParkingService(DataContext context, IGarageService garageService, ISpaceService spaceService, IUserService userService)
         {
             _context = context;
+            _userService = userService;
             _spaceService = spaceService;
             _garageService = garageService;
         }
@@ -81,6 +83,7 @@ namespace WebApi.Services
 
             if (parking == null)
             {
+
                 throw new AppException("Can't Find Your Parking");
             }
 
