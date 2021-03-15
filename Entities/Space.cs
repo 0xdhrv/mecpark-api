@@ -1,4 +1,6 @@
-﻿namespace WebApi.Entities
+﻿using System.Collections.Generic;
+
+namespace WebApi.Entities
 {
     public class Space
     {
@@ -10,6 +12,5 @@
         public AllocationManager AllocationManager { get; set; }
         public int GarageId { get; set; }
         public Garage Garage { get; set; }
-
     }
 }
