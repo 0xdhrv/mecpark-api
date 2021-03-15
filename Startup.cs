@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using WebApi.Helpers;
 using WebApi.Services;
 using Newtonsoft.Json;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApi
 {
@@ -98,6 +101,22 @@ namespace WebApi
         {
             dataContext.Database.Migrate();
 
+            app.UseExceptionHandler(
+                options => {
+                    options.Run(
+                        async context => {
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            context.Response.ContentType = "text/html";
+                            var ex = context.Features.Get<IExceptionHandlerFeature>();
+                            if (ex != null)
+                            {
+                                var err = $"<h1>Oops! Something went wrong</h1>";
+                                await context.Response.WriteAsync(err).ConfigureAwait(false);
+                            }
+
+                        });
+                });
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
@@ -116,6 +135,7 @@ namespace WebApi
                 .AllowAnyHeader());
 
             app.UseHttpsRedirection();
+            
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
