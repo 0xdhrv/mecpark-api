@@ -30,17 +30,21 @@ namespace WebApi.Services
         public Garage Create(Garage garage, int userId)
         {
             var user = _context.Users.Find(userId);
-            var parkingManager = _context.ParkingManagers.Single(x => x.Email == user.Email);
-            if (parkingManager == null)
+            var tempParkingManager = new ParkingManager();
+            var parkingManager = _context.ParkingManagers.SingleOrDefault(x => x.Email == user.Email);
+            if (parkingManager == null && user.Role != "Admin")
             {
                 throw new AppException("Not a parking manager");
             }
-            if (parkingManager.GarageId > 0)
+            if (( parkingManager != null && parkingManager.GarageId > 0) && user.Role != "Admin")
             {
                 throw new AppException("ParkingManager has a Garage");
             }
-            garage.ParkingManager = parkingManager;
-            garage.ParkingManagerId = parkingManager.Id;
+            if(user.Role != "Admin")
+            {
+                garage.ParkingManager = parkingManager;
+                garage.ParkingManagerId = parkingManager.Id;
+            }
             garage.TotalCapacity = "0";
             garage.OccupiedCapacity = "0";
             garage.Space = "0";
@@ -50,8 +54,26 @@ namespace WebApi.Services
             }
             _context.Garages.Add(garage);
             _context.SaveChanges();
-            parkingManager.GarageId = garage.Id;
-            _context.ParkingManagers.Update(parkingManager);
+            if (user.Role == "Admin")
+            {
+                Console.WriteLine("\n" + garage.ParkingManagerId + "\n");
+                if (garage.ParkingManagerId != 0)
+                {
+                    garage.ParkingManagerId = garage.ParkingManagerId;
+                    tempParkingManager = _context.ParkingManagers.Find(garage.ParkingManagerId);
+                    tempParkingManager.GarageId = garage.Id;
+                    Console.WriteLine("\n" + garage.Id + "\n");
+                    _context.ParkingManagers.Update(tempParkingManager);
+                    _context.SaveChanges();
+                    Console.WriteLine("\n" + tempParkingManager.GarageId + "\n");
+                }
+            }
+            if (user.Role != "Admin")
+            {
+                parkingManager.GarageId = garage.Id;
+                _context.ParkingManagers.Update(parkingManager);
+                _context.SaveChanges();
+            }
             _context.SaveChanges();
             return garage;
         }
@@ -145,25 +167,41 @@ namespace WebApi.Services
 
         public void Delete(int userId, int id)
         {
+            var user = _context.Users.Find(userId);
             int parkingManagerId = _userService.GetParkingManagerId(userId);
-            var parkingManager = _context.ParkingManagers.Find(parkingManagerId);
-            if (parkingManager.GarageId == 0)
-                throw new AppException("Can't Delete That Parking");
+            var parkingManager = _context.ParkingManagers.SingleOrDefault(x => x.Id == parkingManagerId);
+            if(parkingManager == null && user.Role != "Admin")
+            {
+
+            }
+            else
+            {
+                if (user.Role != "Admin")
+                {
+                    if (parkingManager.GarageId == 0)
+                    {
+                        throw new AppException("Can't Delete That Parking");
+                    }
+                    else
+                    {
+                        var spaces = _context.Spaces.Where(x => x.GarageId == id);
+                        var allocationManager = _context.AllocationManagers.SingleOrDefault(x => x.GarageId == parkingManager.GarageId);
+                        allocationManager.Space = "0";
+                        _context.AllocationManagers.Update(allocationManager);
+                        _context.SaveChanges();
+                        _context.Spaces.RemoveRange(spaces);
+                        parkingManager.GarageId = 0;
+                        _context.ParkingManagers.Update(parkingManager);
+                        _context.SaveChanges();
+                    }
+                }
+            }
             var garage = _context.Garages.Find(id);
             if(garage == null)
             {
                 throw new AppException("");
             }
-            var spaces = _context.Spaces.Where(x => x.GarageId == id);
-            var allocationManager = _context.AllocationManagers.SingleOrDefault(x => x.GarageId == parkingManager.GarageId);
-            allocationManager.Space = "0";
-            _context.AllocationManagers.Update(allocationManager);
-            _context.SaveChanges();
-            _context.Spaces.RemoveRange(spaces);
             _context.Garages.Remove(garage);
-            _context.SaveChanges();
-            parkingManager.GarageId = 0;
-            _context.ParkingManagers.Update(parkingManager);
             _context.SaveChanges();
         }
     }

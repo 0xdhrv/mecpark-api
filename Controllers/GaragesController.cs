@@ -30,7 +30,7 @@ namespace WebApi.Controllers
 
         }
 
-        [Authorize(Roles = "ParkingManager")]
+        [Authorize(Roles = "Admin,ParkingManager")]
         [HttpPost("create")]
         public IActionResult Create([FromBody] CreateGarageModel model)
         {
@@ -86,7 +86,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "ParkingManager")]
+        [Authorize(Roles = "Admin, ParkingManager")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
