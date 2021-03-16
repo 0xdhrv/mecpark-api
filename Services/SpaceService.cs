@@ -12,6 +12,7 @@ namespace WebApi.Services
         IEnumerable<Space> GetSpaces();
         Space GetSpace(int id);
         IEnumerable<Space> GetSpacesByGarage(int id);
+        IEnumerable<Space> GetSpacesByAllocationManager(int id);
         void Update(int userId, Space space);
         void PlusSpaceCapacity(Space space);
         void MinusSpaceCapacity(Space space);
@@ -85,6 +86,13 @@ namespace WebApi.Services
         {
             var garage = _context.Garages.Find(id);
             var spaces = _context.Spaces.Where(x => x.GarageId == id);
+            return spaces;
+        }
+
+        public IEnumerable<Space> GetSpacesByAllocationManager(int id)
+        {
+            var allocationManager = _context.AllocationManagers.Find(id);
+            var spaces = _context.Spaces.Where(x => x.AllocationManagerId == allocationManager.Id);
             return spaces;
         }
 

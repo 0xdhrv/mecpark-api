@@ -66,6 +66,14 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
+        [HttpGet("byallocationmanager/{id}")]
+        public IActionResult GetSpacesByAllocationManager(int id)
+        {
+            var spaces = _spaceService.GetSpacesByAllocationManager(id);
+            var model = _mapper.Map<IList<Space>>(spaces);
+            return Ok(model);
+        }
+
         [Authorize(Roles = "AllocationManager, ParkingManager")]
         [HttpGet("{id}")]
         public IActionResult GetSpace(int id)
