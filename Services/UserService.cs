@@ -469,8 +469,11 @@ namespace WebApi.Services
                         _context.SaveChanges();
 
                     }
-                    _context.Garages.Remove(garage);
-                    _context.SaveChanges();
+                    if (garage != null)
+                    {
+                        _context.Garages.Remove(garage);
+                        _context.SaveChanges();
+                    }
                     _context.Users.Remove(user);
                     _context.SaveChanges();
                     _context.ParkingManagers.Remove(parkingManager);
