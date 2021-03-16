@@ -7,6 +7,6 @@ namespace WebApi.Models.Parkings
 {
     public class BookParkingAllocationModel
     {
-        int UserId { get; set; }
+        public int UserId { get; set; }
     }
 }

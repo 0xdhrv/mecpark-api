@@ -11,6 +11,8 @@ namespace WebApi.Services
         Parking Book(Parking parking, int userId);
         void CheckIn(int userId);
         void CheckOut(int userId);
+        void SystemCheckIn(Parking userParking);
+        void SystemCheckOut(Parking userParking);
         Parking GetByUserId(int userId);
         IEnumerable<Parking> GetActiveParkings();
         IEnumerable<Parking> GetInactiveParkings();
@@ -82,13 +84,21 @@ namespace WebApi.Services
             return parking;
         }
 
+        public void SystemCheckIn(Parking userParking)
+        {
+            Console.WriteLine("\n" + userParking + "\n");
+        }
+        public void SystemCheckOut(Parking userParking)
+        {
+
+        }
+
         public void CheckIn(int userId)
         {
             var parking = _context.Parkings.SingleOrDefault(p => p.UserId == userId);
 
             if (parking == null)
             {
-
                 throw new AppException("Can't Find Your Parking");
             }
 
@@ -141,6 +151,7 @@ namespace WebApi.Services
             parkingHistory.VehicleNumber = parking.VehicleNumber;
             parkingHistory.DriverName = parking.DriverName;
             parkingHistory.SpaceId = parking.SpaceId;
+            parkingHistory.AllocationMangerId = parking.AllocationMangerId;
             parkingHistory.GarageId = parking.GarageId;
             parkingHistory.UserCheckIn = parking.UserCheckIn;
             parkingHistory.UserCheckOut = parking.UserCheckOut;

@@ -31,6 +31,7 @@ namespace WebApi.Helpers
             CreateMap<UpdateSpaceModel, Space>();
 
             CreateMap<BookParkingModel, Parking>();
+            CreateMap<BookParkingAllocationModel, Parking>();
             CreateMap<Parking, ParkingResponse>();
             CreateMap<ParkingHistory, ReceiptModel>();
         }

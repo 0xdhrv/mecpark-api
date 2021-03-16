@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using WebApi.Entities;
 using WebApi.Helpers;
@@ -88,7 +89,6 @@ namespace WebApi.Controllers
             int id = int.Parse(context.Name);
 
             var userParking = _mapper.Map<Parking>(model);
-            
 
             try
             {
@@ -107,7 +107,6 @@ namespace WebApi.Controllers
         {
             var context = HttpContext.User.Identity;
             int id = int.Parse(context.Name);
-
             var userParking = _mapper.Map<Parking>(model);
 
 
@@ -180,16 +179,16 @@ namespace WebApi.Controllers
         [HttpGet("allocationmanager/{id}")]
         public IActionResult GetParkingsByAllocationManager(int id)
         {
-            var parkings = _parkingService.GetParkingsBySpace(id);
+            var parkings = _parkingService.GetParkingsByAllocationManager(id);
             var model = _mapper.Map<IList<Parking>>(parkings);
             return Ok(model);
         }
 
         [Authorize(Roles = "AllocationManager")]
         [HttpGet("history/allocationmanager/{id}")]
-        public IActionResult GetParkingHistoryAllocationManager(int id)
+        public IActionResult GetParkingHistoryByAllocationManager(int id)
         {
-            var parkings = _parkingService.GetParkingHistoryBySpace(id);
+            var parkings = _parkingService.GetParkingHistoryByAllocationManager(id);
             var model = _mapper.Map<IList<ParkingHistory>>(parkings);
             return Ok(model);
         }
