@@ -9,7 +9,7 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(SqliteDataContext))]
-    [Migration("20210313110724_Initial")]
+    [Migration("20210316051403_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,9 @@ namespace WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AllocationMangerId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("CleaningCost")
                         .HasColumnType("TEXT");
 
@@ -182,6 +185,9 @@ namespace WebApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AllocationMangerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CleaningCost")

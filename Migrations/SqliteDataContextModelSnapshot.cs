@@ -130,6 +130,9 @@ namespace WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AllocationMangerId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("CleaningCost")
                         .HasColumnType("TEXT");
 
@@ -180,6 +183,9 @@ namespace WebApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AllocationMangerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CleaningCost")

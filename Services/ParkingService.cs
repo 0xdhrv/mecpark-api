@@ -18,6 +18,8 @@ namespace WebApi.Services
         IEnumerable<ParkingHistory> GetParkingHistoryByGarage(int garageId);
         IEnumerable<Parking> GetParkingsBySpace(int spaceId);
         IEnumerable<ParkingHistory> GetParkingHistoryBySpace(int spaceId);
+        IEnumerable<Parking> GetParkingsByAllocationManager(int id);
+        IEnumerable<ParkingHistory> GetParkingHistoryByAllocationManager(int id);
         ParkingHistory GetReceipt(int userId);
         IEnumerable<ParkingHistory> GetParkingHistories();
         IEnumerable<ParkingHistory> GetUserParkingHistories(int userId);
@@ -47,6 +49,7 @@ namespace WebApi.Services
                 throw new AppException("Can't Book Parking! Missing Data");
 
             parking.UserId = userId;
+            parking.AllocationMangerId = space.AllocationManagerId;
 
             int occupiedCapacityInt = Int32.Parse(space.OccupiedCapacity);
             int totalCapacityInt = Int32.Parse(space.TotalCapacity);
@@ -188,6 +191,17 @@ namespace WebApi.Services
         public IEnumerable<ParkingHistory> GetParkingHistoryBySpace(int spaceId)
         {
             var parkingHistory = _context.ParkingHistories.Where(p => p.SpaceId == spaceId);
+            return parkingHistory;
+        }
+
+        public IEnumerable<Parking> GetParkingsByAllocationManager(int id)
+        {
+            var parkings = _context.Parkings.Where(p => p.AllocationMangerId == id);
+            return parkings;
+        }
+        public IEnumerable<ParkingHistory> GetParkingHistoryByAllocationManager(int id)
+        {
+            var parkingHistory = _context.ParkingHistories.Where(p => p.AllocationMangerId == id);
             return parkingHistory;
         }
 

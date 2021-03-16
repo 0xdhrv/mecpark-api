@@ -176,6 +176,24 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
+        [Authorize(Roles = "AllocationManager")]
+        [HttpGet("allocationmanager/{id}")]
+        public IActionResult GetParkingsByAllocationManager(int id)
+        {
+            var parkings = _parkingService.GetParkingsBySpace(id);
+            var model = _mapper.Map<IList<Parking>>(parkings);
+            return Ok(model);
+        }
+
+        [Authorize(Roles = "AllocationManager")]
+        [HttpGet("history/allocationmanager/{id}")]
+        public IActionResult GetParkingHistoryAllocationManager(int id)
+        {
+            var parkings = _parkingService.GetParkingHistoryBySpace(id);
+            var model = _mapper.Map<IList<ParkingHistory>>(parkings);
+            return Ok(model);
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpGet("inactive")]
         public IActionResult GetInActiveParkings()
