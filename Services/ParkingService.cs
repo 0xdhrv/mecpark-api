@@ -16,6 +16,8 @@ namespace WebApi.Services
         IEnumerable<Parking> GetInactiveParkings();
         IEnumerable<Parking> GetParkingsByGarage(int garageId);
         IEnumerable<ParkingHistory> GetParkingHistoryByGarage(int garageId);
+        IEnumerable<Parking> GetParkingsBySpace(int spaceId);
+        IEnumerable<ParkingHistory> GetParkingHistoryBySpace(int spaceId);
         ParkingHistory GetReceipt(int userId);
         IEnumerable<ParkingHistory> GetParkingHistories();
         IEnumerable<ParkingHistory> GetUserParkingHistories(int userId);
@@ -175,6 +177,17 @@ namespace WebApi.Services
         public IEnumerable<ParkingHistory> GetParkingHistoryByGarage(int garageId)
         {
             var parkingHistory = _context.ParkingHistories.Where(p => p.GarageId == garageId);
+            return parkingHistory;
+        }
+
+        public IEnumerable<Parking> GetParkingsBySpace(int spaceId)
+        {
+            var parkings = _context.Parkings.Where(p => p.SpaceId == spaceId);
+            return parkings;
+        }
+        public IEnumerable<ParkingHistory> GetParkingHistoryBySpace(int spaceId)
+        {
+            var parkingHistory = _context.ParkingHistories.Where(p => p.SpaceId == spaceId);
             return parkingHistory;
         }
 
