@@ -57,7 +57,7 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
-        // [Authorize(Roles = "Admin, AllocationManager, User")]
+        [Authorize(Roles = "Admin, AllocationManager, User")]
         [HttpGet("bygarage/{id}")]
         public IActionResult GetSpacesByGarage(int id)
         {
@@ -66,6 +66,7 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
+        [Authorize(Roles = "Admin, AllocationManager, User")]
         [HttpGet("byallocationmanager/{id}")]
         public IActionResult GetSpacesByAllocationManager(int id)
         {
