@@ -29,7 +29,7 @@ namespace WebApi.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [Authorize(Roles = "AllocationManager")]
+        [Authorize(Roles = "Admin, AllocationManager")]
         [HttpPost("create")]
         public IActionResult Create([FromBody] CreateSpaceModel model)
         {

@@ -30,50 +30,101 @@ namespace WebApi.Services
         public Space Create(Space space, int userId)
         {
             var user = _context.Users.Find(userId);
-            var allocationManager = _context.AllocationManagers.Single(x => x.Email == user.Email);
-            if (allocationManager == null)
+            var allocationManager = _context.AllocationManagers.SingleOrDefault(x => x.Email == user.Email);
+            if (allocationManager == null && user.Role != "Admin")
             {
                 throw new AppException("Not a allocation manager");
             }
 
-            allocationManager.GarageId = space.GarageId;
-            _context.Update(allocationManager);
-            _context.SaveChanges();
+            if(user.Role != "Admin")
+            {
+                allocationManager.GarageId = space.GarageId;
+                _context.Update(allocationManager);
+                _context.SaveChanges();
 
-            var garage = _context.Garages.Single(x => x.Id == allocationManager.GarageId);
-            var garageSpace = garage.Space;
-            int garageSpaceInt = int.Parse(garageSpace);
+                var garage = _context.Garages.Single(x => x.Id == allocationManager.GarageId);
+                var garageSpace = garage.Space;
+                int garageSpaceInt = int.Parse(garageSpace);
 
-            var garageCapacity = garage.TotalCapacity;
-            int garageCapacityInt = int.Parse(garageCapacity);
+                var garageCapacity = garage.TotalCapacity;
+                int garageCapacityInt = int.Parse(garageCapacity);
 
-            var spaceCount = allocationManager.Space;
-            int spaceCountInt = int.Parse(spaceCount);
-            spaceCountInt += 1;
+                var spaceCount = allocationManager.Space;
+                int spaceCountInt = int.Parse(spaceCount);
+                spaceCountInt += 1;
 
-            var spaceCapacity = space.TotalCapacity;
-            int spaceCapacityInt = int.Parse(spaceCapacity);
+                var spaceCapacity = space.TotalCapacity;
+                int spaceCapacityInt = int.Parse(spaceCapacity);
 
-            space.AllocationManager = allocationManager;
-            space.AllocationManagerId = allocationManager.Id;
-            space.GarageId = allocationManager.GarageId;
-            space.OccupiedCapacity = "0";
-            _context.Spaces.Add(space);
-            _context.SaveChanges();
-            int spaceParam = int.Parse(garage.Space);
-            spaceParam += 1;
-            garage.Space = spaceParam.ToString();
-            int garageTotalCapacityParam = int.Parse(garage.TotalCapacity);
-            int spaceTotalCapacityParam = int.Parse(space.TotalCapacity);
-            garageTotalCapacityParam += spaceTotalCapacityParam;
-            garage.Spaces.Add(space);
-            garage.TotalCapacity = garageTotalCapacityParam.ToString();
-            _context.Garages.Update(garage);
-            _context.SaveChanges();
-            allocationManager.Space = spaceCountInt.ToString();
-            allocationManager.Spaces.Add(space);
-            _context.AllocationManagers.Update(allocationManager);
-            _context.SaveChanges();
+                space.AllocationManager = allocationManager;
+                space.AllocationManagerId = allocationManager.Id;
+                space.GarageId = allocationManager.GarageId;
+                space.OccupiedCapacity = "0";
+                _context.Spaces.Add(space);
+                _context.SaveChanges();
+                int spaceParam = int.Parse(garage.Space);
+                spaceParam += 1;
+                garage.Space = spaceParam.ToString();
+                int garageTotalCapacityParam = int.Parse(garage.TotalCapacity);
+                int spaceTotalCapacityParam = int.Parse(space.TotalCapacity);
+                garageTotalCapacityParam += spaceTotalCapacityParam;
+                garage.Spaces.Add(space);
+                garage.TotalCapacity = garageTotalCapacityParam.ToString();
+                _context.Garages.Update(garage);
+                _context.SaveChanges();
+                allocationManager.Space = spaceCountInt.ToString();
+                allocationManager.Spaces.Add(space);
+                _context.AllocationManagers.Update(allocationManager);
+                _context.SaveChanges();
+            }
+            if (user.Role == "Admin")
+            {
+                if(space.GarageId != 0 && space.AllocationManagerId != 0)
+                {
+                    var tempAllocationManager = _context.AllocationManagers.SingleOrDefault(x => x.Id == space.AllocationManagerId);
+                    var garage = _context.Garages.SingleOrDefault(x => x.Id == space.GarageId);
+                    var garageSpace = garage.Space;
+                    int garageSpaceInt = int.Parse(garageSpace);
+
+                    var garageCapacity = garage.TotalCapacity;
+                    int garageCapacityInt = int.Parse(garageCapacity);
+
+                    var spaceCount = tempAllocationManager.Space;
+                    int spaceCountInt = int.Parse(spaceCount);
+                    spaceCountInt += 1;
+
+                    var spaceCapacity = space.TotalCapacity;
+                    int spaceCapacityInt = int.Parse(spaceCapacity);
+                    space.AllocationManager = tempAllocationManager;
+                    space.AllocationManagerId = tempAllocationManager.Id;
+                    space.GarageId = tempAllocationManager.GarageId;
+                    space.OccupiedCapacity = "0";
+                    _context.Spaces.Add(space);
+                    _context.SaveChanges();
+                    int spaceParam = int.Parse(garage.Space);
+                    spaceParam += 1;
+                    garage.Space = spaceParam.ToString();
+                    int garageTotalCapacityParam = int.Parse(garage.TotalCapacity);
+                    int spaceTotalCapacityParam = int.Parse(space.TotalCapacity);
+                    garageTotalCapacityParam += spaceTotalCapacityParam;
+                    garage.Spaces.Add(space);
+                    garage.TotalCapacity = garageTotalCapacityParam.ToString();
+                    _context.Garages.Update(garage);
+                    _context.SaveChanges();
+                    tempAllocationManager.Space = spaceCountInt.ToString();
+                    tempAllocationManager.Spaces.Add(space);
+                    _context.AllocationManagers.Update(tempAllocationManager);
+                    _context.SaveChanges();
+                }
+                if( space.GarageId !=0 && space.AllocationManagerId == 0)
+                {
+                    Console.WriteLine("\nHERE 1\n");
+                }
+                if(space.GarageId == 0 && space.AllocationManagerId != 0)
+                {
+                    Console.WriteLine("\nHERE 2\n");
+                }
+            }
             return space;
         }
 
@@ -175,14 +226,11 @@ namespace WebApi.Services
             _context.SaveChanges();
             _context.Spaces.Remove(space);
             _context.SaveChanges();
-            Console.WriteLine("\n allocationManager.Space" + allocationManager.Space + "\n");
             int spaceParamInt = int.Parse(allocationManager.Space);
             spaceParamInt -= 1;
             allocationManager.Space = spaceParamInt.ToString();
-            Console.WriteLine("\n allocationManager.Space" + allocationManager.Space + "\n");
             _context.AllocationManagers.Update(allocationManager);
             _context.SaveChanges();
-            Console.WriteLine("\n allocationManager.Space" + allocationManager.Space + "\n");
         }
     }
 }

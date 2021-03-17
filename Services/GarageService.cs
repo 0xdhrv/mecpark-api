@@ -93,56 +93,119 @@ namespace WebApi.Services
         {
             var garage = _context.Garages.Find(garageParam.Id);
             int parkingManagerId = _userService.GetParkingManagerId(userId);
-            var parkingManager = _context.ParkingManagers.Find(parkingManagerId);
-            if (parkingManager.GarageId == 0)
-                throw new AppException("Can't Update That Parking");
+            var user = _context.Users.Find(userId);
+            var parkingManager = _context.ParkingManagers.SingleOrDefault(x => x.Id == parkingManagerId);
+            if (parkingManager == null && user.Role != "Admin")
+            {
 
-            if (!string.IsNullOrWhiteSpace(garageParam.Name))
-            {
-                garage.Name = garageParam.Name;
             }
-            if (!string.IsNullOrWhiteSpace(garageParam.Address))
+            else
             {
-                garage.Address = garageParam.Address;
-            }
-            if (!string.IsNullOrWhiteSpace(garageParam.City))
-            {
-                garage.City = garageParam.City;
-            }
-            if (!string.IsNullOrWhiteSpace(garageParam.State))
-            {
-                garage.State = garageParam.State;
-            }
-            if (!string.IsNullOrWhiteSpace(garageParam.Phone))
-            {
-                garage.Phone = garageParam.Phone;
-            }
-            if (garageParam.hasCleaningService == true || garageParam.hasCleaningService == false)
-            {
-                garage.hasCleaningService = garageParam.hasCleaningService;
-                if (!garageParam.hasCleaningService)
+                if (user.Role != "Admin")
                 {
-                    garage.CleaningRate = "N/A";
+                    if (parkingManager.GarageId == 0)
+                    {
+                        throw new AppException("Can't Update That Parking");
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(garageParam.Name))
+                        {
+                            garage.Name = garageParam.Name;
+                        }
+                        if (!string.IsNullOrWhiteSpace(garageParam.Address))
+                        {
+                            garage.Address = garageParam.Address;
+                        }
+                        if (!string.IsNullOrWhiteSpace(garageParam.City))
+                        {
+                            garage.City = garageParam.City;
+                        }
+                        if (!string.IsNullOrWhiteSpace(garageParam.State))
+                        {
+                            garage.State = garageParam.State;
+                        }
+                        if (!string.IsNullOrWhiteSpace(garageParam.Phone))
+                        {
+                            garage.Phone = garageParam.Phone;
+                        }
+                        if (garageParam.hasCleaningService == true || garageParam.hasCleaningService == false)
+                        {
+                            garage.hasCleaningService = garageParam.hasCleaningService;
+                            if (!garageParam.hasCleaningService)
+                            {
+                                garage.CleaningRate = "N/A";
+                            }
+                        }
+                        if (!string.IsNullOrWhiteSpace(garageParam.ParkingRate))
+                        {
+                            garage.ParkingRate = garageParam.ParkingRate;
+                        }
+                        if (!string.IsNullOrWhiteSpace(garageParam.CleaningRate) && garageParam.hasCleaningService)
+                        {
+                            garage.CleaningRate = garageParam.CleaningRate;
+                        }
+                        if (!string.IsNullOrWhiteSpace(garageParam.TotalCapacity))
+                        {
+                            garage.TotalCapacity = garageParam.TotalCapacity;
+                        }
+                        if (!string.IsNullOrWhiteSpace(garageParam.Space))
+                        {
+                            garage.Space = garageParam.Space;
+                        }
+                        _context.Garages.Update(garage);
+                        _context.SaveChanges();
+                    }
+                }else
+                {
+                    if (!string.IsNullOrWhiteSpace(garageParam.Name))
+                    {
+                        garage.Name = garageParam.Name;
+                    }
+                    if (!string.IsNullOrWhiteSpace(garageParam.Address))
+                    {
+                        garage.Address = garageParam.Address;
+                    }
+                    if (!string.IsNullOrWhiteSpace(garageParam.City))
+                    {
+                        garage.City = garageParam.City;
+                    }
+                    if (!string.IsNullOrWhiteSpace(garageParam.State))
+                    {
+                        garage.State = garageParam.State;
+                    }
+                    if (!string.IsNullOrWhiteSpace(garageParam.Phone))
+                    {
+                        garage.Phone = garageParam.Phone;
+                    }
+                    if (garageParam.hasCleaningService == true || garageParam.hasCleaningService == false)
+                    {
+                        garage.hasCleaningService = garageParam.hasCleaningService;
+                        if (!garageParam.hasCleaningService)
+                        {
+                            garage.CleaningRate = "N/A";
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(garageParam.ParkingRate))
+                    {
+                        garage.ParkingRate = garageParam.ParkingRate;
+                    }
+                    if (!string.IsNullOrWhiteSpace(garageParam.CleaningRate) && garageParam.hasCleaningService)
+                    {
+                        garage.CleaningRate = garageParam.CleaningRate;
+                    }
+                    if (!string.IsNullOrWhiteSpace(garageParam.TotalCapacity))
+                    {
+                        garage.TotalCapacity = garageParam.TotalCapacity;
+                    }
+                    if (!string.IsNullOrWhiteSpace(garageParam.Space))
+                    {
+                        garage.Space = garageParam.Space;
+                    }
+                    _context.Garages.Update(garage);
+                    _context.SaveChanges();
                 }
             }
-            if (!string.IsNullOrWhiteSpace(garageParam.ParkingRate))
-            {
-                garage.ParkingRate = garageParam.ParkingRate;
-            }
-            if (!string.IsNullOrWhiteSpace(garageParam.CleaningRate) && garageParam.hasCleaningService)
-            {
-                garage.CleaningRate = garageParam.CleaningRate;
-            }
-            if (!string.IsNullOrWhiteSpace(garageParam.TotalCapacity))
-            {
-                garage.TotalCapacity = garageParam.TotalCapacity;
-            }
-            if (!string.IsNullOrWhiteSpace(garageParam.Space))
-            {
-                garage.Space = garageParam.Space;
-            }
-            _context.Garages.Update(garage);
-            _context.SaveChanges();
         }
 
         public void PlusGarageCapacity(Garage garageParam)

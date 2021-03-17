@@ -10,5 +10,6 @@ namespace WebApi.Models.Spaces
         public string TotalCapacity { get; set; }
         [Required]
         public int GarageId { get; set; }
+        public int AllocationManagerId { get; set; }
     }
 }

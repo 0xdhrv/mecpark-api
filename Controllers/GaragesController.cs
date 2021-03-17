@@ -57,7 +57,7 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
-        [Authorize(Roles = "ParkingManager")]
+        [Authorize(Roles = "Admin, ParkingManager")]
         [HttpGet("{id}")]
         public IActionResult GetGarage(int id)
         {
@@ -66,7 +66,7 @@ namespace WebApi.Controllers
             return Ok(model);
         }
 
-        [Authorize(Roles = "ParkingManager")]
+        [Authorize(Roles = "Admin, ParkingManager")]
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UpdateGarageModel model)
         {
